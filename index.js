@@ -1,21 +1,15 @@
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import helmet from "helmet";
-import morgan from "morgan";
-import multer from "multer";
-import userRoute from "./routes/users.js";
-import authRoute from "./routes/auth.js";
-import postRoute from "./routes/posts.js";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import cors from "cors";
-
-// تحديد __dirname باستخدام import.meta.url
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const multer = require("multer");
+const userRoute = require("./routes/users");
+const authRoute = require("./routes/auth");
+const postRoute = require("./routes/posts");
+const path = require("path");
+const fs = require("fs");
+const cors = require("cors");
 
 dotenv.config();
 
@@ -28,13 +22,18 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-try {
-  await mongoose.connect('mongodb+srv://fhadshnde32:fhad123@cluster0.c8ify.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
-  console.log("Connected to MongoDB");
-} catch (error) {
-  console.error("Failed to connect to MongoDB:", error);
-  process.exit(1);
-}
+mongoose.connect('mongodb+srv://fhadshnde32:fhad123@cluster0.c8ify.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // مهلة 5 ثوانٍ
+}, (err) => {
+  if (err) {
+    console.error("Failed to connect to MongoDB:", err);
+    process.exit(1);
+  } else {
+    console.log("Connected to MongoDB");
+  }
+});
 
 if (!fs.existsSync(path.join(__dirname, "public/images"))) {
   fs.mkdirSync(path.join(__dirname, "public/images"), { recursive: true });
