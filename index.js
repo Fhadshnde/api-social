@@ -22,7 +22,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-mongoose.connect('mongodb+srv://fhadshnde32:fhad123@cluster0.c8ify.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb+srv://fhadshnde32:fhad@cluster0.lu7zq.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000, // مهلة 5 ثوانٍ
