@@ -14,6 +14,7 @@ const fs = require("fs");
 dotenv.config();
 const cors = require("cors");
 app.use(cors());
+
 const corsOptions = {
   origin: "http://localhost:3000",  
   methods: "GET,POST",
@@ -21,21 +22,27 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 mongoose.connect(
   process.env.MONGO_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false, 
-    useCreateIndex: true, 
+    serverSelectionTimeoutMS: 5000, // مهلة 5 ثوانٍ
   },
-  () => {
-    console.log("Connected to MongoDB");
+  (err) => {
+    if (err) {
+      console.error("Failed to connect to MongoDB:", err);
+      process.exit(1);
+    } else {
+      console.log("Connected to MongoDB");
+    }
   }
 );
+
 if (!process.env.MONGO_URL) {
   console.error("MONGO_URL is not defined in .env file");
-  process.exit(1); 
+  process.exit(1);
 }
 
 if (!fs.existsSync(path.join(__dirname, "public/images"))) {
@@ -72,6 +79,6 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 
 app.listen(process.env.PORT || 8800, () => {
-  console.log(process.env.MONGO_URL )
+  console.log(`MongoDB URL: ${process.env.MONGO_URL}`);
   console.log("Backend server is running!");
 });
