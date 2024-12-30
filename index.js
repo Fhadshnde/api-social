@@ -23,22 +23,28 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-mongoose.connect(
-  process.env.MONGO_URL,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000, // مهلة 5 ثوانٍ
-  },
-  (err) => {
-    if (err) {
-      console.error("Failed to connect to MongoDB:", err);
-      process.exit(1);
-    } else {
-      console.log("Connected to MongoDB");
-    }
-  }
-);
+// mongoose.connect(
+//   process.env.MONGO_URL,
+//   {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     serverSelectionTimeoutMS: 5000, // مهلة 5 ثوانٍ
+//   },
+//   (err) => {
+//     if (err) {
+//       console.error("Failed to connect to MongoDB:", err);
+//       process.exit(1);
+//     } else {
+//       console.log("Connected to MongoDB");
+//     }
+//   }
+// );
+
+try {
+  await mongoose.connect('mongodb+srv://fhadshnde32:fhad123@cluster0.c8ify.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+} catch (error) {
+  handleError(error);
+}
 
 if (!process.env.MONGO_URL) {
   console.error("MONGO_URL is not defined in .env file");
